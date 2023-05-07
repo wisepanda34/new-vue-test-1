@@ -1,15 +1,23 @@
 <template>
   <div class="post" >
-
+    <div>
       <div><strong>Title:</strong> {{post.title}}</div>
       <div><strong>Description:</strong> {{post.body}}</div>
+    </div>
+    <div class="post__btn">
+      <my-button>Delete post</my-button>
+    </div>
+
 
 
   </div>
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton.vue";
+
 export default {
+  components: {MyButton},
   props:{
     post:{
       type: Object,
@@ -24,8 +32,8 @@ export default {
     padding: 15px;
     border: 2px solid teal;
     margin-top: 15px;
-    /*display: flex;*/
-    /*justify-content: space-between;*/
-    /*align-items: center;*/
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
   }
-</style>
+</style> 

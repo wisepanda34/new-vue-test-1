@@ -1,6 +1,6 @@
 <template>
   <form @submit.prevent>
-    <h3>Post creating </h3>
+    <h3>POST CREATING </h3>
     <input
         v-model="posts.title"
         class="input"
@@ -11,16 +11,19 @@
         class="input"
         type="text"
         placeholder="description"/>
-    <button
+    <my-button
         class="btn"
         v-on:click="createPost"
-    >Create</button>
+    >Create</my-button>
   </form>
 
 </template>
 
 <script>
+import MyButton from "@/components/UI/MyButton.vue";
+
 export default {
+  components: {MyButton},
   data(){
     return{
       posts:{

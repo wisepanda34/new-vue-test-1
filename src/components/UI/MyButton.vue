@@ -1,17 +1,17 @@
 <template>
-<!--  <button >-->
-<!--    <slot></slot>-->
-<!--  </button>-->
+<button class="btn">
+  <slot></slot>
+</button>
 </template>
 
 <script>
 export default {
-  // name: "MyButton"
+  name: "my-button"
 }
 </script>
 
 <style scoped>
-  .btn{
+  .btn {
     width: 100px;
     height: 30px;
     background: none;
