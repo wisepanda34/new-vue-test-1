@@ -5,7 +5,7 @@
       <div><strong>Description:</strong> {{post.body}}</div>
     </div>
     <div class="post__btn">
-      <my-button>Delete post</my-button>
+      <my-button @click="$emit('remove',post)">Delete post</my-button>
     </div>
 
 
@@ -36,4 +36,4 @@ export default {
     justify-content: space-between;
     align-items: center;
   }
-</style> 
+</style>

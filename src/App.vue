@@ -1,8 +1,9 @@
 <template>
-  <div class="app">
+  <div class="app" v-show="posts.length>0">
     <PostForm  @create="createPost"/>
-    <PostList  v-bind:posts="posts" />
+    <PostList  v-bind:posts="posts" @remove="removePost" />
   </div>
+  <h2 v-show="posts.length===0" style="color: teal">Posts list is empty!</h2>
 </template>
 
 <script>
@@ -24,6 +25,9 @@ export  default {
   methods:{
     createPost(post){
       this.posts.push(post);
+    },
+    removePost(post){
+      this.post=this.posts.filter(p=>p.id!==post.id)
     }
   }
 }
