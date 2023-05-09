@@ -1,7 +1,7 @@
 <template>
   <div class="app" v-show="posts.length>0">
-    <PostForm  @create="createPost"/>
-    <PostList  v-bind:posts="posts" @remove="removePost" />
+    <PostForm  @create="createPost" />
+    <PostList  :posts="posts" @remove="removePost" />
   </div>
   <h2 v-show="posts.length===0" style="color: teal">Posts list is empty!</h2>
 </template>
@@ -9,6 +9,7 @@
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
+// import MyTest from "@/components/MyTest.vue";
 export  default {
   components:{
     PostList, PostForm
@@ -27,9 +28,10 @@ export  default {
       this.posts.push(post);
     },
     removePost(post){
-      this.post=this.posts.filter(p=>p.id!==post.id)
+      this.posts=this.posts.filter(p=>p.id!==post.id)
     }
-  }
+  },
+
 }
 </script>
 

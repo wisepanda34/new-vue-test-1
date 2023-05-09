@@ -2,15 +2,17 @@
   <form @submit.prevent>
     <h3>POST CREATING </h3>
     <my-input
-        v-model="posts.title"
+        v-model="post.title"
+        type="text"
         placeholder="title"/>
     <my-input
-        v-model="posts.body"
+        v-model="post.body"
+        type="text"
         placeholder="description"/>
     <my-button
         class="btn"
-        v-on:click="createPost"
-    >Create</my-button>
+        @click="createPost"
+    >Create post</my-button>
   </form>
 
 </template>
@@ -23,7 +25,7 @@ export default {
   components: {MyInput, MyButton},
   data(){
     return{
-      posts:{
+      post:{
         title:'',
         body: '',
       }

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div >
     <h3>THE POSTS LIST</h3>
     <post-item
         v-for="post in posts"
@@ -9,6 +9,7 @@
     />
   </div>
 </template>
+
 
 <script>
 import PostItem from "@/components/PostItem.vue";
@@ -29,4 +30,5 @@ export default {
   h3{
     margin-top: 20px;
   }
+
 </style>
