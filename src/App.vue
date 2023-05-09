@@ -1,7 +1,12 @@
 <template>
   <div class="app" >
-    <PostForm  @create="createPost" />
-    <PostList  :posts="posts" @remove="removePost" />
+    <h1>PAGE POSTS</h1>
+    <my-button @click="showDialog">Create post</my-button>
+    <my-dialog v-model:show="dialogVisible">
+      <PostForm  @create="createPost" />
+    </my-dialog>
+    <PostList v-if="!isPostsLoading" :posts="posts" @remove="removePost" />
+    <div v-else>Run loading...</div>
     <h2 class="listEmpty" v-show="posts.length===0" >Posts list is empty!</h2>
   </div>
 </template>
@@ -9,29 +14,49 @@
 <script>
 import PostForm from "@/components/PostForm.vue";
 import PostList from "@/components/PostList.vue";
-// import MyTest from "@/components/MyTest.vue";
+import MyDialog from "@/components/UI/MyDialog.vue";
+import MyButton from "@/components/UI/MyButton.vue";
+import axios from "axios";
 export  default {
   components:{
-    PostList, PostForm
+    MyButton,
+    MyDialog,
+    PostList,
+    PostForm,
   },
   data(){
     return{
-      posts:[
-        {id:1, title:'Javascript 1', body:'Javascript is an universal programm lang 1'},
-        {id:2, title:'Javascript 2', body:'Javascript is lang 2'},
-        {id:3, title:'Javascript 3', body:'Javascript is an universal 3'}
-      ],
+      posts:[],
+      dialogVisible: false,
+      isPostsLoading: false,
     }
   },
   methods:{
     createPost(post){
       this.posts.push(post);
+      this.dialogVisible=false;
     },
     removePost(post){
       this.posts=this.posts.filter(p=>p.id!==post.id)
-    }
+    },
+    showDialog(){
+      this.dialogVisible=true;
+    },
+    async fetchPosts(){
+      try{
+        this.isPostsLoading=true;
+        const response= await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
+        this.posts=response.data;
+      }catch (e){
+        alert('error')
+      }finally {
+        this.isPostsLoading=false;
+      }
+    },
   },
-
+  mounted() {
+    this.fetchPosts()
+  }
 }
 </script>
 
@@ -47,6 +72,10 @@ export  default {
   .listEmpty{
     color: teal;
     margin-top: 20px;
+  }
+  h1{
+    margin: 10px 0;
+    color: teal;
   }
 
 </style>

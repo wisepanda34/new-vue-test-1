@@ -7,9 +7,6 @@
     <div class="post__btn">
       <my-button @click="$emit('remove',post)">Delete post</my-button>
     </div>
-
-
-
   </div>
 </template>
 
