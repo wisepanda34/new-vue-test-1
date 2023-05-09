@@ -1,9 +1,9 @@
 <template>
-  <div class="app" v-show="posts.length>0">
+  <div class="app" >
     <PostForm  @create="createPost" />
     <PostList  :posts="posts" @remove="removePost" />
+    <h2 class="listEmpty" v-show="posts.length===0" >Posts list is empty!</h2>
   </div>
-  <h2 v-show="posts.length===0" style="color: teal">Posts list is empty!</h2>
 </template>
 
 <script>
@@ -43,6 +43,10 @@ export  default {
   }
   .app{
     padding: 20px;
+  }
+  .listEmpty{
+    color: teal;
+    margin-top: 20px;
   }
 
 </style>

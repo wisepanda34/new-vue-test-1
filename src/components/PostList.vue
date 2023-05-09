@@ -1,6 +1,6 @@
 <template>
-  <div >
-    <h3>THE POSTS LIST</h3>
+  <div>
+    <h3 v-show="posts.length>0">THE POSTS LIST</h3>
     <post-item
         v-for="post in posts"
         :post="post"
