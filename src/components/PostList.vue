@@ -15,9 +15,10 @@
 
 <script>
 import PostItem from "@/components/PostItem.vue";
+import MyInput from "@/components/UI/MyInput.vue";
 
 export default {
-  components: {PostItem},
+  components: {MyInput, PostItem},
   props:{
     posts:{
       type: Array,

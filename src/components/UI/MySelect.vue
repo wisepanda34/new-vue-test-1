@@ -1,5 +1,5 @@
 <template>
-  <select @change="changeOption">
+  <select name="mySelect" @change="changeOption">
     <option disabled value="">Choose from list</option>
     <option v-for="option in options"
             :key="option.value"
@@ -33,5 +33,13 @@ export default {
 </script>
 
 <style scoped>
+  select{
+    height: 42px;
+    margin: 10px 0;
+    outline: none;
+    padding: 0 0 0 10px;
 
+  }
+  option{
+  }
 </style>

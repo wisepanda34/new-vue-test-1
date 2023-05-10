@@ -49,7 +49,6 @@ export default {
   form{
     display: flex;
     flex-direction: column;
-    gap: 10px;
   }
 
 </style>
