@@ -18,7 +18,7 @@
            :key="pageNumber"
            class="page"
            :class="{
-             'current-page':page == pageNumber
+             'current-page':page === pageNumber
            }"
            @click="changePage(pageNumber)"
       >{{pageNumber}}</div>
