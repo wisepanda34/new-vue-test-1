@@ -12,9 +12,23 @@
     <my-dialog v-model:show="dialogVisible">
       <PostForm  @create="createPost" />
     </my-dialog>
+
+    <div class="page__wrapper">
+      <div v-for="pageNumber in totalPages"
+           :key="pageNumber"
+           class="page"
+           :class="{
+             'current-page':page == pageNumber
+           }"
+           @click="changePage(pageNumber)"
+      >{{pageNumber}}</div>
+    </div>
+
     <PostList v-if="!isPostsLoading" :posts="sortedAndSearchedPosts" @remove="removePost" />
     <div v-else>Run loading...</div>
     <h2 class="listEmpty" v-show="posts.length===0" >Posts list is empty!</h2>
+
+
   </div>
 </template>
 
@@ -46,6 +60,9 @@ export  default {
         {value: 'body', name: 'by description'},
       ],
       searchQuery:'',
+      page:1,
+      limit:8,
+      totalPages:0,
     }
   },
   methods:{
@@ -59,10 +76,20 @@ export  default {
     showDialog(){
       this.dialogVisible=true;
     },
+    changePage(pageNumber) {
+      this.page = pageNumber
+      // this.fetchPosts()
+    },
     async fetchPosts(){
       try{
         this.isPostsLoading=true;
-        const response= await axios.get('https://jsonplaceholder.typicode.com/posts?_limit=5');
+        const response= await axios.get('https://jsonplaceholder.typicode.com/posts?',{
+          params:{
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages=Math.ceil(response.headers['x-total-count']/this.limit)
         this.posts=response.data;
       }catch (e){
         alert('error')
@@ -70,6 +97,7 @@ export  default {
         this.isPostsLoading=false;
       }
     },
+
 
   },
   mounted() {
@@ -84,6 +112,9 @@ export  default {
     }
   },
   watch:{
+    page(){
+      this.fetchPosts()
+    }
   }
 }
 </script>
@@ -108,6 +139,18 @@ export  default {
   h1{
     margin: 10px 0;
     color: teal;
+  }
+  .page__wrapper{
+    display: flex;
+    margin: 10px 0;
+  }
+  .page{
+    border: 1px solid teal;
+    margin: 5px;
+    padding: 10px;
+  }
+  .current-page{
+    background: rgba(0,128,128,0.5);
   }
 
 </style>
