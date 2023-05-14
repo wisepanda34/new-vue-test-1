@@ -12,12 +12,13 @@ export default {
 
 <style scoped>
   .btn {
-    width: 100px;
+    min-width: 80px;
     height: 40px;
     background: none;
     color: teal;
     border: 3px solid teal;
     cursor: pointer;
     margin: 10px 0;
+    padding: 5px 5px;
   }
 </style>

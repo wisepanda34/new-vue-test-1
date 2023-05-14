@@ -6,7 +6,8 @@
       <div><strong>Description:</strong> {{post.body}}</div>
     </div>
     <div class="post__btn">
-      <my-button @click="$emit('remove',post)">Delete post</my-button>
+      <my-button @click="$router.push(`/posts/${post.id}`)">Open</my-button>
+      <my-button @click="$emit('remove',post)">Delete</my-button>
     </div>
   </div>
 </template>
@@ -19,7 +20,7 @@ export default {
   props:{
     post:{
       type: Object,
-      required:true,
+      required:true
     }
   }
 }
@@ -33,5 +34,9 @@ export default {
     display: flex;
     justify-content: space-between;
     align-items: center;
+  }
+  .post__btn{
+    display: flex;
+    gap: 10px;
   }
 </style>
