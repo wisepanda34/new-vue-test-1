@@ -13,22 +13,23 @@
       <PostForm  @create="createPost" />
     </my-dialog>
 
-    <div class="page__wrapper">
-      <div v-for="pageNumber in totalPages"
-           :key="pageNumber"
-           class="page"
-           :class="{
-             'current-page':page === pageNumber
-           }"
-           @click="changePage(pageNumber)"
-      >{{pageNumber}}</div>
-    </div>
+<!--    <div class="page__wrapper">-->
+<!--      <div v-for="pageNumber in totalPages"-->
+<!--           :key="pageNumber"-->
+<!--           class="page"-->
+<!--           :class="{-->
+<!--             'current-page':page === pageNumber-->
+<!--           }"-->
+<!--           @click="changePage(pageNumber)"-->
+<!--      >{{pageNumber}}</div>-->
+<!--    </div>-->
 
-    <PostList v-if="!isPostsLoading" :posts="sortedAndSearchedPosts" @remove="removePost" />
-    <div v-else>Run loading...</div>
-    <h2 class="listEmpty" v-show="posts.length===0" >Posts list is empty!</h2>
+    <post-list v-if="!isPostsLoading" :posts="sortedAndSearchedPosts" @remove="removePost" />
+    <div class="run-load" v-else>Run loading...</div>
+    <h2 class="list-empty" v-show="posts.length===0" >Posts list is empty!</h2>
 
-
+<!--    <div @click="loadMorePosts">Load more posts</div>-->
+    <div ref="observer" class="observer"></div>
   </div>
 </template>
 
@@ -56,12 +57,13 @@ export  default {
       isPostsLoading: false,
       selectedSort: '',
       sortOptions: [
+        {value: '', name: 'not sort'},
         {value: 'title', name: 'by name'},
         {value: 'body', name: 'by description'},
       ],
       searchQuery:'',
       page:1,
-      limit:8,
+      limit:10,
       totalPages:0,
     }
   },
@@ -76,10 +78,10 @@ export  default {
     showDialog(){
       this.dialogVisible=true;
     },
-    changePage(pageNumber) {
-      this.page = pageNumber
-      // this.fetchPosts()
-    },
+    // changePage(pageNumber) {
+    //   this.page = pageNumber
+    //   this.fetchPosts()
+    // },
     async fetchPosts(){
       try{
         this.isPostsLoading=true;
@@ -97,12 +99,40 @@ export  default {
         this.isPostsLoading=false;
       }
     },
+    async loadMorePosts(){
+      try{
+        this.page+=1;
+        const response= await axios.get('https://jsonplaceholder.typicode.com/posts?',{
+          params:{
+            _page: this.page,
+            _limit: this.limit
+          }
+        });
+        this.totalPages=Math.ceil(response.headers['x-total-count']/this.limit)
+        this.posts=[...this.posts,...response.data];
+      }catch (e){
+        alert('error')
+      }
+    },
 
 
   },
   mounted() {
-    this.fetchPosts()
+    this.fetchPosts();
+    console.log(this.$refs.observer);
+    const options = {
+       rootMargin:'0px',
+       threshold: 1.0
+     };
+     const callback=(entries,observer)=>{
+       if(entries[0].isIntersecting && this.page<this.totalPages){
+         this.loadMorePosts();
+       }
+    };
+     const observer= new IntersectionObserver(callback,options);
+    observer.observe(this.$refs.observer)
   },
+
   computed:{
     sortedPosts(){
       return [...this.posts].sort((post1,post2)=>post1[this.selectedSort]?.localeCompare(post2[this.selectedSort]))
@@ -112,9 +142,9 @@ export  default {
     }
   },
   watch:{
-    page(){
-      this.fetchPosts()
-    }
+    // page(){
+    //   this.fetchPosts()
+    // }
   }
 }
 </script>
@@ -132,9 +162,13 @@ export  default {
     display: flex;
     justify-content: space-between;
   }
-  .listEmpty{
+  .list-empty{
     color: teal;
     margin-top: 20px;
+  }
+  .run-load{
+    font-size: 18px;
+    color: red;
   }
   h1{
     margin: 10px 0;
@@ -151,6 +185,10 @@ export  default {
   }
   .current-page{
     background: rgba(0,128,128,0.5);
+  }
+  .observer{
+    height: 30px;
+    background: teal;
   }
 
 </style>
